@@ -3,19 +3,17 @@
 
 (def parse
   (insta/parser
-   "stmt = assn | func | expr 
-    assn = name <eq> expr
-    func = name params <eq> expr
-    name = #\"\\w+\"
-    expr = <' '* '('> expr <')' ' '*> | arithm | name | val
-    arithm = expr ( op expr )* 
-    op = <' '*> ( '*' | '/' | '%' | '+' | '_' ) <' '*>
-    params = <'('> ( name (<','> name)* )* <')'>
-    eq = #\"\\s+=\\s+\"
-    val = num | matrix
-    matrix = <'['> matrix-row (<';'> matrix-row)* <']'>
-    matrix-row = <'['> num ( <','> num )* <']'>
-    num = #\"-?\\d+(\\.\\d+)*\"
+   "expr = term '+' expr | term '-' expr | term
+    term = factor '*' term |factor '/' term | factor
+    factor = <'('> expr <')'> | num
+    num = <#'\\s*'> #'-?\\d+(\\.\\d+)*' <#'\\s*'> 
    "))
+;;expr = num | expr (op expr)* | <#'\\s*\\(\\s*'> expr <#'\\s*\\)\\s*'> 
+;; op = <#'\\s*'> ( '*' | '**' | '^' | '/' | '%' | '+' | '-' ) <#'\\s*'>
+;; num = <#'\\s*'> #'-?\\d+(\\.\\d+)*' <#'\\s*'> 
 
-(parse "5")
+(->> "1*(1+(((100))))"
+     (parse)
+     (insta/transform {:expr (fn [& [v :as args]]
+                               (if (= 1 (count args)) v args))
+                       :num read-string}))
