@@ -12,6 +12,16 @@
    row = <'['> num (<','> num )* <']'>
    ")
 
+(def scope (atom {}))
+(def set-var! (partial swap! scope update))
+
+(defn- handle-assignment [[_ [_ var] val]]
+  (set-var var val))
+
+(swap! scope update :a 1)
+
+@scope
+
 (def parse (comp
             (partial transform {:num read-string
                                 :matrix (fn [& rows]
@@ -21,4 +31,4 @@
                                                  rows)])})
             (parser rules)))
 
-(parse "asdfas=1+10")
+(parse "asdfas=(((10)))")
