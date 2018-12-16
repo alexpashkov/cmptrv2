@@ -1,7 +1,5 @@
 (ns cmptrv2.core
-  (:gen-class))
+  (:gen-class)
+  (:require [cmptrv2.parser :refer [parse]]))
 
-(defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println "Hello, World!"))
+(parse "2+3")

@@ -1,32 +1,22 @@
-(ns cmptrv2.core
-  (:require [instaparse.core :as insta]))
+(ns cmptrv2.parser
+  (:require [instaparse.core :refer [parser transform]]))
 
-(def parse
-  (insta/parser
-   "expr = term '+' expr | term '-' expr | term
-    term = factor '*' term | factor '/' term | factor '%' term | factor '^' term | factor
-    factor = <'('> expr <')'> | num
-    num = <#'\\s*'> #'-?\\d+(\\.\\d+)*' <#'\\s*'> 
-   "))
+(def ^:private rules
+  "expr = term '+' expr | term '-' expr | term
+   term = factor '*' term | factor '/' term | factor '%' term | factor '^' term | factor
+   factor = <'('> expr <')'> | num | matrix
+   var = #'\\w+'
+   num = <#'\\s*'> #'-?\\d+(\\.\\d+)*' <#'\\s*'> 
+   matrix = <'['> row (<';'> row )* <']'>
+   row = <'['> num (<','> num )* <']'>
+   ")
 
-(def ops {"+" +
-          "-" -
-          "*" *
-          "^" expt
-          "/" /
-          "%" mod})
+(def parse (comp (fn [tree]
+                   (transform {:num read-string
+                               :matrix (fn [& rows]
+                                         [:matrix (into []
+                                                        (map #(into [] (rest %)))
+                                                        rows)])} tree))
+                 (parser rules)))
 
-(defmulti eval-expr first)
-
-(defmethod eval-expr :factor [[_ x]]
-  (eval-expr x))
-
-(defmethod eval-expr :num [[_ x]]
-  (read-string x))
-
-(defmethod eval-expr :default [[_ x op y :as args]]
-  (if (= 2 (count args))
-    (eval-expr x)
-    (apply (ops op) (map eval-expr [x y]))))
-
-(eval-expr (parse "3^10"))
+(parse "[[1,2];[1,2]]")
