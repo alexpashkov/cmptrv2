@@ -1,5 +1,5 @@
 (ns cmptrv2.parse
-  (:require [instaparse.core :refer [parser failure?]]))
+  (:require [instaparse.core :as insta]))
 
 (def rules
   "S = assn | expr
@@ -15,8 +15,15 @@
 
 (def parse (comp
              ;#(if (failure? %) (throw (ex-info "Failed to parse" %)) %)
-             (parser rules)
+             (fn [tree]
+               (insta/transform {
+                                 :var identity
+                                 } tree))
+
+             (insta/parser rules)
              ))
 
+
+(parse "asdf=1")
 
 

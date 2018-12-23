@@ -5,9 +5,22 @@
 (deftest eval-apply-test
   (testing "numbers"
     (are [expr val]
-      (= (eval-apply expr {}) {:val val :scope {}})
+      (= (eval-apply expr) {:val val :scope {}})
       "0" 0
       "1" 1
       "4" 4
       "0.5" 0.5
-      )))
+      "-10" -10
+      ))
+  (testing "assignment"
+    (are [expr val]
+      (= (eval-apply expr {}) {:val val :scope {"foo" val}})
+      "foo=0" 0
+      "foo=1" 1
+      "foo=4" 4
+      "foo=0.5" 0.5
+      "foo=-10" -10
+      )
+
+    )
+  )
