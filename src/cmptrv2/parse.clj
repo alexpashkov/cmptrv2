@@ -11,15 +11,20 @@
    var = #'\\w+'
    num = <#'\\s*'> #'-?\\d+(\\.\\d+)*' <#'\\s*'>
    matrix = <'['> row (<';'> row )* <']'>
-   row = <'['> num (<','> num )* <']'>
+   row = <'['> cell (<','> cell )* <']'>
+   cell = <#'\\s*'> #'-?\\d+(\\.\\d+)*' <#'\\s*'>
    ")
 
 (def parse (comp
             (fn [tree]
-              (insta/transform {:sym identity} tree))
+              (insta/transform {:sym    identity
+                                :matrix (fn [& rows]
+                                          [:matrix (into [] rows)
+                                           ])
+                                :row    #(into [] %&)
+                                :cell   read-string
+                                } tree))
 
             (insta/parser rules)))
-
-(parse "asdf=1")
 
 

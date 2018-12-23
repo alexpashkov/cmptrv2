@@ -9,6 +9,9 @@
     {:scope (assoc scope sym val)
      :val   val}))
 
+(defmethod eval-tree :matrix [[_ rows] _]
+  rows)
+
 (defmethod eval-tree :var [[_ sym] scope]
   (get scope sym))
 
