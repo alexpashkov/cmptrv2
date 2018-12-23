@@ -14,9 +14,9 @@
    ")
 
 (def parse (comp
-             #(if (failure? %) (throw (ex-info "Failed to parse" %)) %)
+             ;#(if (failure? %) (throw (ex-info "Failed to parse" %)) %)
              (parser rules)
              ))
 
-(.getMessage (try (parse "=") (catch Exception e e)))
+
 

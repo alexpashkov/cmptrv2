@@ -3,10 +3,11 @@
             [cmptrv2.eval-apply :refer :all]))
 
 (deftest eval-apply-test
-  (testing "simple assignment"
-    (is (= (eval-apply "a = 1" {}) {
-                                    :state {
-                                            "a" 1
-                                            }
-                                    :val   1
-                                    }))))
+  (testing "numbers"
+    (are [expr val]
+      (= (eval-apply expr {}) {:val val :scope {}})
+      "0" 0
+      "1" 1
+      "4" 4
+      "0.5" 0.5
+      )))

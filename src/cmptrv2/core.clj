@@ -3,10 +3,10 @@
   (:require [cmptrv2.eval-apply :refer [eval-apply]]))
 
 (defn -main [& _]
-  (reduce (fn [state line]
-            (let [{:keys [err val state]} (eval-apply state line)]
+  (reduce (fn [scope line]
+            (let [{:keys [err val scope]} (eval-apply line scope)]
               (println (or err val))
-              state))
+              scope))
           {}
           (line-seq (java.io.BufferedReader. *in*))))
 
