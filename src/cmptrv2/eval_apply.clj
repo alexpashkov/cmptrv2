@@ -5,14 +5,15 @@
 
 (defmulti eval-tree (fn [tree _] (first tree)))
 
-(defmethod eval-tree :assn [[_ var expr] scope]
-  (let [{
-         val :val
-         } (eval-tree expr scope)]
+(defmethod eval-tree :assn [[_ sym expr] scope]
+  (let [{val :val} (eval-tree expr scope)]
     {
-     :scope (assoc scope var val)
+     :scope (assoc scope sym val)
      :val   val
      }))
+
+(defmethod eval-tree :var [[_ sym] scope]
+  (get scope sym))
 
 (defmethod eval-tree :num [[_ num] scope]
   {
@@ -26,10 +27,7 @@
 (defn eval-apply
   ([expr]
    (eval-apply expr {}))
-
   ([expr scope]
    (-> (parse expr)
-       (eval-tree scope))
-    )
-  )
+       (eval-tree scope))))
 

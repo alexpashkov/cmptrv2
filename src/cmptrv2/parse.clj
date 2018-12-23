@@ -3,10 +3,11 @@
 
 (def rules
   "S = assn | expr
-   assn = var<#'\\s*''='#'\\s*'>expr
+   assn = sym<#'\\s*''='#'\\s*'>expr
    expr = term '+' expr | term '-' expr | term
    term = factor '*' term | factor '/' term | factor '%' term | factor '^' term | factor
    factor = <'('> expr <')'> | var | num | matrix
+   sym = #'\\w+'
    var = #'\\w+'
    num = <#'\\s*'> #'-?\\d+(\\.\\d+)*' <#'\\s*'>
    matrix = <'['> row (<';'> row )* <']'>
@@ -14,10 +15,9 @@
    ")
 
 (def parse (comp
-             ;#(if (failure? %) (throw (ex-info "Failed to parse" %)) %)
              (fn [tree]
                (insta/transform {
-                                 :var identity
+                                 :sym identity
                                  } tree))
 
              (insta/parser rules)
