@@ -15,14 +15,10 @@
    ")
 
 (def parse (comp
-             (fn [tree]
-               (insta/transform {
-                                 :sym identity
-                                 } tree))
+            (fn [tree]
+              (insta/transform {:sym identity} tree))
 
-             (insta/parser rules)
-             ))
-
+            (insta/parser rules)))
 
 (parse "asdf=1")
 

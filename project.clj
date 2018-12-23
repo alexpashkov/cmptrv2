@@ -6,6 +6,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [instaparse "1.4.9"]
                  [rhizome "0.2.9"]]
+  :plugins [[lein-cljfmt "0.6.3"]]
   :main ^:skip-aot cmptrv2.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
