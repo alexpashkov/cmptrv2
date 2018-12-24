@@ -1,32 +1,35 @@
 (ns cmptrv2.eval-apply
-  (:refer-clojure :exclude [eval])
   (:require [cmptrv2.parse :refer [parse]]))
 
-(defmulti eval-tree (fn [tree _] (first tree)))
+(declare ^:dynamic *scope*)
 
-(defmethod eval-tree :assn [[_ sym expr] scope]
-  (let [{val :val} (eval-tree expr scope)]
-    {:scope (assoc scope sym val)
-     :val   val}))
+(defmulti eval-tree (fn [tree] (first tree)))
 
-(defmethod eval-tree :matrix [[_ rows] _]
+(defmethod eval-tree :assn [[_ sym expr]]
+  (let [val (eval-tree expr)]
+    (set! *scope* (assoc *scope* sym val))
+    val))
+
+(defmethod eval-tree :matrix [[_ rows]]
   rows)
 
-(defmethod eval-tree :var [[_ sym] scope]
-  (get scope sym))
+(defmethod eval-tree :var [[_ sym]]
+  (get *scope* sym))
 
-(defmethod eval-tree :num [[_ num] scope]
-  {:scope scope
-   :val   (read-string num)})
+(defmethod eval-tree :num [[_ num]]
+  (read-string num))
 
-(defmethod eval-tree :default [[_ child] scope]
+(defmethod eval-tree :default [[_ child]]
   (when child
-    (eval-tree child scope)))
+    (eval-tree child)))
 
 (defn eval-apply
   ([expr]
    (eval-apply expr {}))
   ([expr scope]
-   (-> (parse expr)
-       (eval-tree scope))))
+   (binding [*scope* scope]
+     (-> (parse expr)
+          (eval-tree)
+          (#(assoc {:scope *scope*} :val %))))))
+
 
