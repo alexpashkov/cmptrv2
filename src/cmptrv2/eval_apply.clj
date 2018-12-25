@@ -1,7 +1,8 @@
 (ns cmptrv2.eval-apply
   (:require [instaparse.core :as insta]
             [cmptrv2.parse :refer [parse]]
-            [cmptrv2.validators :as v]))
+            [cmptrv2.validators :as v])
+  (:import [clojure.lang ExceptionInfo]))
 
 (declare ^:dynamic *scope*)
 
@@ -15,7 +16,7 @@
 (defmethod eval-tree :matrix [[_ rows]]
   (if (v/matrix? rows)
     rows
-    (throw (IllegalArgumentException. "invalid matrix"))))
+    (throw (IllegalStateException. "invalid matrix"))))
 
 (defmethod eval-tree :var [[_ sym]]
   (get *scope* sym))
@@ -32,9 +33,15 @@
    (eval-apply expr {}))
   ([expr scope]
    (binding [*scope* scope]
-     (-> (parse expr)
-         (#(if (insta/failure? %)
-             (throw (ex-info "failed to parse" %))
-             %))
-         (eval-tree)
-         (#(assoc {:scope *scope*} :val %))))))
+     (try (-> (parse expr)
+              (#(if (insta/failure? %)
+                  (throw (ex-info "failed to parse" %))
+                  %))
+              (eval-tree)
+              (#(assoc {:scope *scope*} :val %)))
+          (catch ExceptionInfo e {:scope scope
+                                  :err (.getMessage e)
+                                  :data (.getData e)})
+          (catch Exception e {:scope scope
+                              :err (.getMessage e)})))))
+
