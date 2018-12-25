@@ -5,7 +5,7 @@
 (deftest eval-apply-test
   (testing "numbers"
     (are [expr val]
-      (= (eval-apply expr) {:val val :scope {}})
+         (= (eval-apply expr) {:val val :scope {}})
       "0" 0
       "1" 1
       "4" 4
@@ -13,9 +13,9 @@
       "-10" -10))
   (testing "symbol resolution"
     (are [sym val]
-      (= (:val (eval-apply sym {"foo" 1
-                                "bar" 2
-                                "baz" []})) val)
+         (= (:val (eval-apply sym {"foo" 1
+                                   "bar" 2
+                                   "baz" []})) val)
       "foo" 1
       "bar" 2
       "baz" []
@@ -23,7 +23,7 @@
 
   (testing "assignment"
     (are [expr val]
-      (= (eval-apply expr {}) {:val val :scope {"foo" val}})
+         (= (eval-apply expr {}) {:val val :scope {"foo" val}})
       "foo=0" 0
       "foo=1" 1
       "foo=4" 4

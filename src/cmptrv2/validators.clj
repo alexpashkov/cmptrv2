@@ -6,7 +6,8 @@
        (let [size (count (first m))]
          (every? (fn [r]
                    (and
-                     (vector? r)
-                     (= size (count r))
-                     (every? number? r)))
+                    (vector? r)
+                    (= size (count r))
+                    (every? number? r)))
                  m))))
+
