@@ -2,8 +2,8 @@
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.10.0"]
+            :url  "http://www.eclipse.org/legal/epl-v10.html"}
+  :dependencies [[org.clojure/clojure "1.10.0-RC4"]
                  [instaparse "1.4.9"]
                  [rhizome "0.2.9"]]
   :plugins [[lein-cljfmt "0.6.3"]]

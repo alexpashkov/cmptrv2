@@ -1,5 +1,7 @@
 (ns cmptrv2.eval-apply
-  (:require [cmptrv2.parse :refer [parse]]))
+  (:require [cmptrv2.parse :refer [parse]]
+            [clojure.spec.alpha :as s]
+            ))
 
 (declare ^:dynamic *scope*)
 

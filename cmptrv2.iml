@@ -19,11 +19,13 @@
     <orderEntry type="library" name="Leiningen: com.google.javascript/closure-compiler:v20151216" level="project" />
     <orderEntry type="library" name="Leiningen: instaparse:1.4.9" level="project" />
     <orderEntry type="library" name="Leiningen: nrepl:0.4.4" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/clojure:1.8.0" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/clojure:1.10.0-RC4" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/clojurescript:1.7.228" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/core.specs.alpha:0.2.44" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/data.json:0.2.6" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/google-closure-library-third-party:0.0-20151016-61277aea" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/google-closure-library:0.0-20151016-61277aea" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/spec.alpha:0.2.176" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/tools.logging:0.4.1" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/tools.nrepl:0.2.12" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/tools.reader:1.0.0-alpha4" level="project" />
