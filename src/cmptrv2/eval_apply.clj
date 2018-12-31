@@ -44,4 +44,3 @@
                                   :data (.getData e)})
           (catch Exception e {:scope scope
                               :err (.getMessage e)})))))
-
